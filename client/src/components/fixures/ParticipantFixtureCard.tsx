@@ -1,18 +1,6 @@
 import { FC } from "react";
 import { Card, CardContent, Typography } from "@mui/material";
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
-  });
-};
+import { formatDate } from "../../utils/formatDate";
 
 const ParticipantFixtureCard: FC<{
   event_start_time: string;

@@ -1,4 +1,4 @@
-# Instructions to Install Dependencies
+# Instructions to Install Dependencies and Run code locally
 
 ### 1. Install Root Dependencies
 

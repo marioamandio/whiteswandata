@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { FC, Fragment, useMemo } from "react";
 import { BetPlaced, Column } from "../types";
-import { formatDate, getTableCellText } from "../utils";
+import { formatDate } from "../utils/formatDate";
+import { getTableCellText } from "../utils/parseCellsText";
 
 interface BetsData {
   bets: BetPlaced[];

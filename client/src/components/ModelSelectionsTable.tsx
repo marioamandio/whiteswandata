@@ -12,7 +12,7 @@ import {
 import { FC, Fragment, ReactNode, useMemo, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import BetsPlacedSection from "./BetsPlaced";
-import { getTableCellText } from "../utils";
+import { getTableCellText } from "../utils/parseCellsText";
 
 interface ModelSelection {
   selection_id: string;
@@ -64,8 +64,6 @@ const GET_MODELS_SELECTIONS = gql`
 
 const columns: readonly Column[] = [
   { id: "selection_id", label: "Selection ID", minWidth: 170 },
-  { id: "fixture.fixture_id", label: "Fixture ID", minWidth: 100 },
-  { id: "fixture.fixture_type", label: "Fixture type", minWidth: 100 },
   { id: "selection", label: "Selection", minWidth: 100 },
   { id: "market.market_name", label: "Market", minWidth: 100 },
   { id: "value", label: "Value", minWidth: 100 },

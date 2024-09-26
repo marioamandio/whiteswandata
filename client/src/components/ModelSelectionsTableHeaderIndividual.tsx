@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
-import { formatDate } from "../utils";
+import { formatDate } from "../utils/formatDate";
 
 const TableHeaderIndividualFixtures: FC<{
   fixture: {

@@ -1,0 +1,15 @@
+{
+  "name": "whiteswansata",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm --prefix server install && npm --prefix client install",
+    "start": "concurrently \"npm --prefix server start\" \"npm run --prefix client dev\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

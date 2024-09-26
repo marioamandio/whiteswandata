@@ -3,7 +3,7 @@ export const getTableCellText = (
   row: Record<string, unknown>
 ): string | number => {
   const keys = column.id.split(".");
-  let v = row;
+  let v = row as unknown as string;
 
   keys.forEach((k) => {
     if (v && typeof v === "object" && k in v) {
@@ -14,17 +14,4 @@ export const getTableCellText = (
   });
 
   return typeof v === "string" || typeof v === "number" ? v : "";
-};
-
-export const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleString("en-UK", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
-  });
 };

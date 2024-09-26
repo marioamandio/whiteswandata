@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Card, CardContent, Typography } from "@mui/material";
-import { formatDate } from "../../utils";
+import { formatDate } from "../../utils/formatDate";
 
 const IndividualFixturesCard: FC<{
   event_name: string;

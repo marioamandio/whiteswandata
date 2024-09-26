@@ -56,10 +56,7 @@ test("Render Model Selections Table with Mock apollo client", async () => {
     expect(screen.queryByText("Bets Placed")).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByText("3.16"));
-    // expect(screen.getByText("Loading...")).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText("Mocked Bets Placed")).toBeInTheDocument();
-    });
+    expect(screen.getByText("Mocked Bets Placed")).toBeInTheDocument();
   });
 });

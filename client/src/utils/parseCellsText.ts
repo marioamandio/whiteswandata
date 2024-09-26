@@ -15,3 +15,10 @@ export const getTableCellText = (
 
   return typeof v === "string" || typeof v === "number" ? v : "";
 };
+
+export const formatNumberWithCommas = (number: number) => {
+  return number.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

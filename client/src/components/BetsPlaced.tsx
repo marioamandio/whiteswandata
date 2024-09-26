@@ -12,7 +12,10 @@ import {
 import { FC, Fragment, useMemo } from "react";
 import { BetPlaced, Column } from "../types";
 import { formatDate } from "../utils/formatDate";
-import { getTableCellText } from "../utils/parseCellsText";
+import {
+  formatNumberWithCommas,
+  getTableCellText,
+} from "../utils/parseCellsText";
 
 interface BetsData {
   bets: BetPlaced[];
@@ -50,6 +53,12 @@ const columns: readonly Column[] = [
   },
   { id: "stake_size", label: "Stake Size" },
   { id: "price", label: "Price" },
+  {
+    id: "bet_size",
+    label: "Bet Size",
+    align: "right",
+    format: (value) => formatNumberWithCommas(Number(value)),
+  },
 ];
 
 const BetsPlacedSection: FC<{
@@ -74,6 +83,15 @@ const BetsPlacedSection: FC<{
     return columns;
   }, [fixtureType]);
 
+  const bets = useMemo(() => {
+    return data.bets.map((bet) => {
+      return {
+        ...bet,
+        bet_size: bet.price * bet.stake_size,
+      };
+    });
+  }, [data.bets]);
+
   if (loading) return <Box>Loading...</Box>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -97,7 +115,7 @@ const BetsPlacedSection: FC<{
               </TableRow>
             </TableHead>
             <TableBody sx={{ width: "100%", position: "relative" }}>
-              {data.bets.map((row, idx) => {
+              {bets.map((row, idx) => {
                 return (
                   <Fragment key={`${row.selection_id}${idx}`}>
                     <TableRow hover role="checkbox" tabIndex={-1}>

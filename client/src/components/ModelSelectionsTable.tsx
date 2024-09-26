@@ -63,16 +63,16 @@ export const GET_MODELS_SELECTIONS = gql`
 `;
 
 const columns: readonly Column[] = [
-  { id: "selection_id", label: "Selection ID", minWidth: 170 },
-  { id: "selection", label: "Selection", minWidth: 100 },
-  { id: "market.market_name", label: "Market", minWidth: 100 },
-  { id: "value", label: "Value", minWidth: 100 },
+  { id: "selection_id", label: "Selection ID", minWidth: 200 },
+  { id: "selection", label: "Selection", minWidth: 200 },
+  { id: "market.market_name", label: "Market", minWidth: 200 },
+  { id: "value", label: "Value", minWidth: 200 },
   {
     id: "bottom_price",
     label: "Bottom Price",
     minWidth: 100,
     align: "right",
-    format: (value: number) => value.toFixed(2),
+    format: (value) => Number(value).toFixed(2),
   },
   {
     id: "expand",

@@ -1,8 +1,9 @@
 import {
   getBetsPlaced,
   getBetsPlacedByModelSelection,
+  getBetsByTraderId,
 } from "./db/betsPlaced.js";
-import { getTraderByID } from "./db/traders.js";
+import { getTraderByID, getTraders } from "./db/traders.js";
 import { getMarketByID } from "./db/markets.js";
 import {
   getIndividualFixtures,
@@ -24,6 +25,9 @@ export const resolvers = {
       const betsPlaced = await getBetsPlaced(fixture_id, selection_id);
       return betsPlaced;
     },
+    traders: async () => {
+      return await getTraders();
+    },
     modelSelections: async (_, args) => {
       if (args.fixture_id) {
         return await getModelSelectionsByFixtureID(args.fixture_id);
@@ -42,6 +46,20 @@ export const resolvers = {
     },
     participantFixtures: async () => {
       return await getParticipantFixtures();
+    },
+  },
+  Trader: {
+    bets: async ({ trader_id }) => {
+      const allBetsForTrader = await getBetsByTraderId(trader_id);
+
+      const total_amount = allBetsForTrader.reduce((acc, cur) => {
+        return acc + cur.stake_size * cur.price;
+      }, 0);
+
+      return {
+        bets_placed: allBetsForTrader,
+        total_amount: Number(total_amount).toFixed(2),
+      };
     },
   },
 

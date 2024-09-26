@@ -2,6 +2,7 @@ type Query {
   bets(fixture_id: ID, selection_id: ID): [Bet]
   modelSelections(fixture_id: ID): [ModelSelection]
   modelSelection(id: ID!): ModelSelection
+  traders: [Trader]
   trader(id: ID!): Trader
   market(id: ID!): Market
   individualFixtures: [IndividualFixture]
@@ -39,6 +40,17 @@ type IndividualFixture {
   sport_id: ID!
   models: [ModelSelection]
   fixture_type: String
+}
+
+type Trader {
+  trader_name: String
+  trader_id: ID!
+  bets: TraderBets
+}
+
+type TraderBets {
+  bets_placed: [Bet]
+  total_amount: Float
 }
 
 type ParticipantFixture {

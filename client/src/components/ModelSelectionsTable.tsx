@@ -44,7 +44,7 @@ interface Column {
   format?: (value: string | number) => string | ReactNode;
 }
 
-const GET_MODELS_SELECTIONS = gql`
+export const GET_MODELS_SELECTIONS = gql`
   query GetModelSelections($fixture_id: ID) {
     modelSelections(fixture_id: $fixture_id) {
       selection_id

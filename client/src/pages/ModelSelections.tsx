@@ -3,6 +3,7 @@ import ModelSelectionsTable from "../components/ModelSelectionsTable";
 import { useLocation, useNavigate } from "react-router-dom";
 import TableHeaderIndividualFixtures from "../components/ModelSelectionsTableHeaderIndividual";
 import TableHeaderParticipantFixtures from "../components/ModelSelectionsTableHeaderParticipants";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ModelSelectionsPage = () => {
   const { pathname, state } = useLocation();
@@ -15,7 +16,11 @@ const ModelSelectionsPage = () => {
         <CardContent>
           <Box sx={{ textAlign: "start", marginBottom: "16px" }}>
             <Button variant="contained" onClick={() => navigate("/")}>
-              Back
+              <Box display="flex" alignItems={"center"} gap="2px">
+                <ArrowBackIcon sx={{ fontSize: "1rem" }} />
+                <Typography variant="body1"></Typography>
+                View all fixtures
+              </Box>
             </Button>
           </Box>
           {fixture.fixtureType === "individual" && (

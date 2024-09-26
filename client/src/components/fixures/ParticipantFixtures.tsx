@@ -53,7 +53,7 @@ const ParticipantFixtures = () => {
       <Grid container spacing={4}>
         {data.participantFixtures.map((fixture) => {
           return (
-            <Grid size={4}>
+            <Grid size={4} key={fixture.fixture_id}>
               <Link
                 to={`/${fixture.fixture_id}`}
                 state={{ fixture: { ...fixture, fixtureType: "participant" } }}

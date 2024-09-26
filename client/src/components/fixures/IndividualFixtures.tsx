@@ -55,7 +55,7 @@ const IndividualFixtures = () => {
       <Grid container spacing={4}>
         {data.individualFixtures.map((fixture) => {
           return (
-            <Grid size={4}>
+            <Grid size={4} key={fixture.fixture_id}>
               <Link
                 to={`/${fixture.fixture_id}`}
                 state={{ fixture: { ...fixture, fixtureType: "individual" } }}

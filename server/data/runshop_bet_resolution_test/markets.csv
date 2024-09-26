@@ -1,0 +1,18 @@
+,market_name,market_id
+0,Match Odds,11
+1,Correct score,12
+2,Total goals,13
+3,Total cards,14
+4,Total corners,15
+5,First team to score,16
+6,Total runs 6th over first innings,22
+7,Total runs 10th over first innings,23
+8,Total runs 15th over first innings,24
+9,Total runs 20th over first innings,25
+10,Total runs 6th over second innings,26
+11,Total runs 10th over second innings,27
+12,Total runs 15th over second innings,28
+13,Total runs 20th over second innings,29
+14,Win,1
+15,Place,2
+16,Each Way,5

@@ -1,0 +1,74 @@
+type Query {
+  bets(fixture_id: ID, selection_id: ID): [Bet]
+  modelSelections(fixture_id: ID): [ModelSelection]
+  modelSelection(id: ID!): ModelSelection
+  trader(id: ID!): Trader
+  market(id: ID!): Market
+  individualFixtures: [IndividualFixture]
+  participantFixtures: [ParticipantFixture]
+}
+
+type Bet {
+  selection_id: ID!
+  selection: String
+  value: String
+  bet_time: String
+  stake_size: Int
+  price: Float
+  trader: Trader
+  market: Market
+  fixture: Fixture
+}
+
+type Trader {
+  trader_id: ID!
+  trader_name: String!
+}
+
+type Market {
+  market_name: String!
+  market_id: ID!
+}
+
+type IndividualFixture {
+  fixture_id: ID!
+  event_name: String
+  event_number: String
+  event_start_time: String
+  runner: String
+  sport_id: ID!
+  models: [ModelSelection]
+  fixture_type: String
+}
+
+type ParticipantFixture {
+  fixture_id: ID!
+  participant_1: String
+  participant_2: String
+  sport_id: ID!
+  event_start_time: String
+  models: [ModelSelection]
+  fixture_type: String
+}
+
+type Fixture {
+  fixture_id: ID!
+  participant_1: String
+  participant_2: String
+  sport_id: ID!
+  event_start_time: String!
+  event_name: String
+  event_number: Int
+  runner: String
+  fixture_type: String!
+}
+
+type ModelSelection {
+  selection_id: ID!
+  fixture: Fixture
+  market: Market
+  selection: String!
+  value: String
+  bottom_price: Float!
+  bets_placed: [Bet]
+}

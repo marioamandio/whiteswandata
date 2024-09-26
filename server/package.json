@@ -1,0 +1,24 @@
+{
+  "name": "whiteswan-server",
+  "version": "1.0.0",
+  "description": "whiteswan exercise server",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "express": "^4.21.0",
+    "graphql": "^16.9.0",
+    "knex": "^3.1.0",
+    "nanoid": "^5.0.7",
+    "nodemon": "^3.1.7"
+  }
+}

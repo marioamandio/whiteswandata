@@ -44,7 +44,7 @@ const columns: readonly Column[] = [
   { id: "selection_id", label: "Selection ID", minWidth: 150 },
   { id: "selection", label: "Selection", minWidth: 150 },
   { id: "market.market_name", label: "Market", minWidth: 150 },
-  { id: "value", label: "Value", minWidth: 150 },
+  { id: "value", label: "Value", minWidth: 100 },
   {
     id: "bottom_price",
     label: "Bottom Price",

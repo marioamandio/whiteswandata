@@ -54,4 +54,4 @@ cd server
 npm run test
 ```
 
-### 3. This will execute the client-side tests
+### 3. This will execute the server tests

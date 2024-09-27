@@ -20,7 +20,9 @@ const ResolveSelectionModelButton: FC<{
         selection_id={selection_id}
         callback={callback}
       />
-      <Button onClick={() => setShowModal(true)}>Resolve Outcome</Button>
+      <Button onClick={() => setShowModal(true)} variant="outlined">
+        Resolve Outcome
+      </Button>
     </Box>
   );
 };

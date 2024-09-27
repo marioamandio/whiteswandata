@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   Box,
   Paper,
@@ -9,10 +9,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { FC, Fragment, ReactNode, useMemo, useState } from "react";
+import { FC, Fragment, useMemo, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import BetsPlacedSection from "./BetsPlaced";
 import { getTableCellText } from "../utils/parseCellsText";
+import { Column } from "../types";
+import { GET_MODELS_SELECTIONS } from "../queries/modelsSelections";
 
 interface ModelSelection {
   selection_id: string;
@@ -36,32 +38,6 @@ interface GetModelSelectionsVars {
   fixture_id?: string;
 }
 
-interface Column {
-  id: string;
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: string | number) => string | ReactNode;
-}
-
-export const GET_MODELS_SELECTIONS = gql`
-  query GetModelSelections($fixture_id: ID) {
-    modelSelections(fixture_id: $fixture_id) {
-      selection_id
-      fixture {
-        fixture_type
-        fixture_id
-      }
-      market {
-        market_name
-      }
-      selection
-      value
-      bottom_price
-    }
-  }
-`;
-
 const columns: readonly Column[] = [
   { id: "selection_id", label: "Selection ID", minWidth: 200 },
   { id: "selection", label: "Selection", minWidth: 200 },
@@ -75,13 +51,32 @@ const columns: readonly Column[] = [
     format: (value) => Number(value).toFixed(2),
   },
   {
-    id: "expand",
-    label: "expand",
-    format: () => (
-      <Box sx={{ height: "24px", width: "24px" }}>
-        <KeyboardArrowDownIcon />
+    id: "outcome.outcome",
+    label: "Outcome",
+    format: (value) => (
+      <Box
+        sx={{
+          border: `1px solid ${value === "won" ? "#28a745" : "#dc3545"}`,
+          color: value === "won" ? "#28a745" : "#dc3545",
+          textAlign: "center",
+          padding: "4px",
+          borderRadius: "4px",
+        }}
+      >
+        {value}
       </Box>
     ),
+  },
+  {
+    id: "expand",
+    label: "expand",
+    format: () => {
+      return (
+        <Box sx={{ height: "24px", width: "24px" }}>
+          <KeyboardArrowDownIcon />
+        </Box>
+      );
+    },
   },
 ];
 

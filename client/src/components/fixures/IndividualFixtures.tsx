@@ -1,8 +1,9 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Grid2";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import IndividualFixturesCard from "./IndividualFixtureCard";
+import { GET_INDIVIDUAL_FIXTURES } from "../../queries/fixtures";
 
 interface IndividualFixture {
   event_name: string;
@@ -20,19 +21,6 @@ interface GetIndividualFixtureData {
 interface GetIndividualFixtureVars {
   fixture_id?: string;
 }
-
-const GET_INDIVIDUAL_FIXTURES = gql`
-  query {
-    individualFixtures {
-      fixture_id
-      event_name
-      event_number
-      event_start_time
-      runner
-      sport_id
-    }
-  }
-`;
 
 const IndividualFixtures = () => {
   const {

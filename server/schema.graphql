@@ -19,6 +19,7 @@ type Bet {
   trader: Trader
   market: Market
   fixture: Fixture
+  selection_model: ModelSelection
 }
 
 type Trader {
@@ -83,4 +84,10 @@ type ModelSelection {
   value: String
   bottom_price: Float!
   bets_placed: [Bet]
+  outcome: SelectionsOutcome
+}
+
+type SelectionsOutcome {
+  selection_id: ID!
+  outcome: String
 }

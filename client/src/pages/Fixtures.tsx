@@ -2,6 +2,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import IndividualFixtures from "../components/fixures/IndividualFixtures";
 import ParticipantFixtures from "../components/fixures/ParticipantFixtures";
 import { FC, ReactNode, useState } from "react";
+import TradersTable from "../components/TradersTable";
 
 const CustomTabPanel: FC<{
   children: ReactNode;
@@ -31,6 +32,7 @@ const FixturesPage = () => {
       >
         <Tab label="Individual Fixtures" />
         <Tab label="Participant Fixtures" />
+        <Tab label="Traders" />
       </Tabs>
 
       <CustomTabPanel value={tabIndex} index={0}>
@@ -38,6 +40,9 @@ const FixturesPage = () => {
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={1}>
         <ParticipantFixtures />
+      </CustomTabPanel>
+      <CustomTabPanel value={tabIndex} index={2}>
+        <TradersTable />
       </CustomTabPanel>
     </Box>
   );

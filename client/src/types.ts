@@ -1,9 +1,11 @@
+import { ReactNode } from "react";
+
 export interface Column {
   id: string;
   label: string;
   minWidth?: number;
   align?: "right";
-  format?: (value: number) => string;
+  format?: (value: string | number) => string | ReactNode;
 }
 
 export interface BetPlaced {

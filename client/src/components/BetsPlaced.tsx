@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   Box,
   Table,
@@ -16,6 +16,7 @@ import {
   formatNumberWithCommas,
   getTableCellText,
 } from "../utils/parseCellsText";
+import { GET_BETS_PLACED } from "../queries/bets";
 
 interface BetsData {
   bets: BetPlaced[];
@@ -25,22 +26,6 @@ interface GetBetsVars {
   fixture_id?: string;
   selection_id?: string;
 }
-
-const GET_BETS_PLACED = gql`
-  query GetBets($fixture_id: ID, $selection_id: ID) {
-    bets(fixture_id: $fixture_id, selection_id: $selection_id) {
-      selection_id
-      selection
-      value
-      bet_time
-      stake_size
-      price
-      trader {
-        trader_name
-      }
-    }
-  }
-`;
 
 const columns: readonly Column[] = [
   { id: "trader.trader_name", label: "Trader" },

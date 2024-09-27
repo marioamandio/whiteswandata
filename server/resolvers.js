@@ -18,6 +18,7 @@ import {
   getModelSelections,
   getModelSelectionsByFixtureID,
 } from "./db/modelSelections.js";
+import { getModelSelectionsOutcome } from "./db/modelSelectionsOutcomes.js";
 
 export const resolvers = {
   Query: {
@@ -74,6 +75,9 @@ export const resolvers = {
     fixture: async ({ fixture_id }) => {
       return await getFixture(fixture_id);
     },
+    selection_model: async ({ selection_id }) => {
+      return await getModelSelectionByID(selection_id);
+    },
   },
 
   ModelSelection: {
@@ -87,6 +91,10 @@ export const resolvers = {
       const betsPlaced = await getBetsPlacedByModelSelection(selection_id);
 
       return betsPlaced;
+    },
+    outcome: async ({ selection_id }) => {
+      const outcome = await getModelSelectionsOutcome(selection_id);
+      return await outcome;
     },
   },
 };

@@ -35,7 +35,23 @@ cd client
 ### 2. Run the tests with:
 
 ```bash
-npm run tests
+npm run test
+```
+
+### 3. This will execute the client-side tests
+
+# Run Server tests
+
+### 1. Navigate into the `server` folder:
+
+```bash
+cd server
+```
+
+### 2. Run the tests with:
+
+```bash
+npm run test
 ```
 
 ### 3. This will execute the client-side tests

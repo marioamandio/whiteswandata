@@ -1,8 +1,9 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Grid2";
 import { Typography } from "@mui/material";
 import ParticipantFixtureCard from "./ParticipantFixtureCard";
 import { Link } from "react-router-dom";
+import { GET_PARTICIPANT_FIXTURES } from "../../queries/fixtures";
 
 interface ParticipantFixture {
   event_start_time: string;
@@ -19,18 +20,6 @@ interface GetModelSelectionsData {
 interface GetModelSelectionsVars {
   fixture_id?: string;
 }
-
-const GET_PARTICIPANT_FIXTURES = gql`
-  query {
-    participantFixtures {
-      event_start_time
-      fixture_id
-      participant_1
-      participant_2
-      sport_id
-    }
-  }
-`;
 
 const ParticipantFixtures = () => {
   const {

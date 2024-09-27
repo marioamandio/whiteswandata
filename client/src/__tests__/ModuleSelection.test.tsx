@@ -1,8 +1,8 @@
 import { MockedProvider } from "@apollo/client/testing";
-import ModelSelectionsTable, {
-  GET_MODELS_SELECTIONS,
-} from "../components/ModelSelectionsTable";
+import ModelSelectionsTable from "../components/ModelSelectionsTable";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { vi } from "vitest";
+import { GET_MODELS_SELECTIONS } from "../queries/modelsSelections";
 
 vi.mock("../components/BetsPlaced", () => ({
   default: () => <div>Mocked Bets Placed</div>,
@@ -31,6 +31,9 @@ const mocks = [
             selection: "Win",
             selection_id: "c37dad6d-78b6-4332-b12c-acec1ff82190",
             value: "",
+            outcome: {
+              outcome: "won",
+            },
           },
         ],
       },

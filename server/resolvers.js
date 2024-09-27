@@ -18,7 +18,10 @@ import {
   getModelSelections,
   getModelSelectionsByFixtureID,
 } from "./db/modelSelections.js";
-import { getModelSelectionsOutcome } from "./db/modelSelectionsOutcomes.js";
+import {
+  getModelSelectionsOutcome,
+  insertModelSelectionOutcome,
+} from "./db/modelSelectionsOutcomes.js";
 
 export const resolvers = {
   Query: {
@@ -47,6 +50,12 @@ export const resolvers = {
     },
     participantFixtures: async () => {
       return await getParticipantFixtures();
+    },
+  },
+
+  Mutation: {
+    resolveBet: async (_, { selection_id, outcome }) => {
+      return await insertModelSelectionOutcome(selection_id, outcome);
     },
   },
   Trader: {

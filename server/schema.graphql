@@ -9,6 +9,10 @@ type Query {
   participantFixtures: [ParticipantFixture]
 }
 
+type Mutation {
+  resolveBet(selection_id: ID!, outcome: String): SelectionsOutcome
+}
+
 type Bet {
   selection_id: ID!
   selection: String

@@ -10,12 +10,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { Fragment, ReactNode, useMemo } from "react";
+import { Fragment, ReactNode, useEffect, useMemo } from "react";
 import {
   formatNumberWithCommas,
   getTableCellText,
 } from "../utils/parseCellsText";
 import { GET_TRADERS } from "../queries/traders";
+import { green, red } from "@mui/material/colors";
 
 interface Trader {
   trader_name: string;
@@ -46,13 +47,26 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "trader_name", label: "Trader Name", minWidth: 150 },
+  { id: "trader_name", label: "Trader Name", minWidth: 120 },
   { id: "amountOfBets", label: "total Bets", minWidth: 100, align: "right" },
+  {
+    id: "pendingBets",
+    label: "Bets Pending",
+    minWidth: 100,
+    align: "right",
+  },
+  {
+    id: "pendingAmount",
+    label: "Amount Pending",
+    minWidth: 150,
+    align: "right",
+    format: (value) => formatNumberWithCommas(Number(value)),
+  },
   { id: "amountOfBetsLost", label: "Bets Lost", minWidth: 100, align: "right" },
   {
     id: "totalLost",
     label: "Total Loss",
-    minWidth: 200,
+    minWidth: 150,
     align: "right",
     format: (value) => formatNumberWithCommas(Number(value)),
   },
@@ -62,11 +76,9 @@ const columns: readonly Column[] = [
     minWidth: 150,
     align: "right",
   },
-
   {
     id: "totalEarned",
     label: "Total Profit",
-    minWidth: 200,
     align: "right",
     format: (value) => formatNumberWithCommas(Number(value)),
   },
@@ -74,8 +86,17 @@ const columns: readonly Column[] = [
     id: "netBalance",
     label: "Net Balance",
     align: "right",
-    minWidth: 200,
-    format: (value) => formatNumberWithCommas(Number(value)),
+    minWidth: 150,
+    format: (value) => (
+      <Box
+        style={{
+          padding: "4px 8px",
+          backgroundColor: Number(value) >= 0 ? green[200] : red[200],
+        }}
+      >
+        {formatNumberWithCommas(Number(value))}
+      </Box>
+    ),
   },
 ];
 
@@ -84,13 +105,25 @@ const TradersTable = () => {
     loading,
     error,
     data = { traders: [] },
-  } = useQuery<GetTradersData>(GET_TRADERS);
+    refetch,
+  } = useQuery<GetTradersData>(GET_TRADERS, {});
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const tradersData = useMemo(() => {
     return data.traders.map((trader) => {
       const amountOfBets = trader.bets.bets_placed.length;
       const totals = trader.bets.bets_placed.reduce(
         (acc, cur) => {
+          if (!cur.selection_model.outcome) {
+            return {
+              ...acc,
+              pendingAmount: acc.pendingAmount + cur.price * cur.stake_size,
+              pendingBets: acc.pendingBets + 1,
+            };
+          }
           if (cur.selection_model.outcome.outcome === "won") {
             return {
               ...acc,
@@ -109,6 +142,8 @@ const TradersTable = () => {
           totalLost: 0,
           amountOfBetsLost: 0,
           successfulBets: 0,
+          pendingBets: 0,
+          pendingAmount: 0,
         }
       );
 

@@ -5,7 +5,11 @@ export interface Column {
   label: string;
   minWidth?: number;
   align?: "right";
-  format?: (value: string | number) => string | ReactNode;
+  format?: (
+    value: string | number,
+    id: string,
+    callback: () => void
+  ) => string | ReactNode;
 }
 
 export interface BetPlaced {

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_TRADERS = gql`
-  query {
-    traders {
+  query GetTraders($searchQuery: String) {
+    traders(searchQuery: $searchQuery) {
       trader_name
       trader_id
       bets {

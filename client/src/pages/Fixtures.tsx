@@ -1,48 +1,45 @@
-import { Box, Tab, Tabs } from "@mui/material";
-import IndividualFixtures from "../components/fixures/IndividualFixtures";
-import ParticipantFixtures from "../components/fixures/ParticipantFixtures";
-import { FC, ReactNode, useState } from "react";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
+import IndividualFixtures from "../components/fixtures/IndividualFixtures";
+import ParticipantFixtures from "../components/fixtures/ParticipantFixtures";
+import { useState } from "react";
 import TradersTable from "../components/TradersTable";
+import CustomTabPanel from "../components/CustomTabPanel";
 
-const CustomTabPanel: FC<{
-  children: ReactNode;
-  value: number;
-  index: number;
-}> = ({ children, value, index }) => {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-};
+const TABS_LABELS = [
+  "All Individual Fixtures",
+  "All Participant Fixtures",
+  "Unresolved Individual Fixtures",
+  "Unresolved Participant Fixtures",
+  "Traders",
+];
 
 const FixturesPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <Box>
-      <Tabs
-        value={tabIndex}
-        onChange={(_, newValue) => setTabIndex(newValue)}
-        aria-label="basic tabs example"
-      >
-        <Tab label="Individual Fixtures" />
-        <Tab label="Participant Fixtures" />
-        <Tab label="Traders" />
+      <Tabs value={tabIndex} onChange={(_, newValue) => setTabIndex(newValue)}>
+        {TABS_LABELS.map((label) => (
+          <Tab key={label} label={label} />
+        ))}
       </Tabs>
+      <Typography variant="h3" sx={{ marginBottom: "8px" }}>
+        {TABS_LABELS[tabIndex]}
+      </Typography>
 
       <CustomTabPanel value={tabIndex} index={0}>
-        <IndividualFixtures />
+        <IndividualFixtures searchQuery={""} />
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={1}>
-        <ParticipantFixtures />
+        <ParticipantFixtures searchQuery={""} />
       </CustomTabPanel>
       <CustomTabPanel value={tabIndex} index={2}>
-        <TradersTable />
+        <IndividualFixtures resolved={false} searchQuery={""} />
+      </CustomTabPanel>
+      <CustomTabPanel value={tabIndex} index={3}>
+        <ParticipantFixtures resolved={false} searchQuery={""} />
+      </CustomTabPanel>
+      <CustomTabPanel value={tabIndex} index={4}>
+        <TradersTable searchQuery={""} />
       </CustomTabPanel>
     </Box>
   );

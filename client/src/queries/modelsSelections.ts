@@ -20,3 +20,21 @@ export const GET_MODELS_SELECTIONS = gql`
     }
   }
 `;
+
+export const SUBMIT_SELECTION_OUTCOME = gql`
+  mutation (
+    $selection_id: ID!
+    $fixture_id: ID!
+    $fixture_type: String!
+    $outcome: String!
+  ) {
+    resolveBet(
+      selection_id: $selection_id
+      fixture_id: $fixture_id
+      fixture_type: $fixture_type
+      outcome: $outcome
+    ) {
+      outcome
+    }
+  }
+`;

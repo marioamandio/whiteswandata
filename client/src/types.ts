@@ -7,8 +7,8 @@ export interface Column {
   align?: "right";
   format?: (
     value: string | number,
-    id: string,
-    callback: () => void
+    ids?: Record<string, string>,
+    callback?: () => void
   ) => string | ReactNode;
 }
 

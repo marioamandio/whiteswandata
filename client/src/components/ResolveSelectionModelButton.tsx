@@ -3,21 +3,17 @@ import { FC, useState } from "react";
 import ResolveSelectionModal from "./ResolveSelectionModal";
 
 const ResolveSelectionModelButton: FC<{
-  selection_id: string;
-  callback: () => void;
-}> = ({ selection_id, callback }) => {
+  payload: Record<string, string>;
+  callback?: () => void;
+}> = ({ payload, callback }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <Box
-      onClick={(event) => {
-        event.stopPropagation();
-      }}
-    >
+    <Box onClick={(event) => event.stopPropagation()}>
       <ResolveSelectionModal
         open={showModal}
         setOpen={setShowModal}
-        selection_id={selection_id}
+        payload={payload}
         callback={callback}
       />
       <Button onClick={() => setShowModal(true)} variant="outlined">

@@ -8,15 +8,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
-import { Fragment, ReactNode, useEffect, useMemo } from "react";
+import { FC, Fragment, useMemo } from "react";
 import {
   formatNumberWithCommas,
   getTableCellText,
 } from "../utils/parseCellsText";
 import { GET_TRADERS } from "../queries/traders";
 import { green, red } from "@mui/material/colors";
+import { Column } from "../types";
 
 interface Trader {
   trader_name: string;
@@ -38,12 +38,8 @@ interface GetTradersData {
   traders: Trader[];
 }
 
-interface Column {
-  id: string;
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: string | number) => string | ReactNode;
+interface GetTradersVars {
+  searchQuery?: string;
 }
 
 const columns: readonly Column[] = [
@@ -100,42 +96,35 @@ const columns: readonly Column[] = [
   },
 ];
 
-const TradersTable = () => {
+const TradersTable: FC<{ searchQuery: string }> = ({ searchQuery }) => {
   const {
     loading,
     error,
     data = { traders: [] },
-    refetch,
-  } = useQuery<GetTradersData>(GET_TRADERS, {});
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  } = useQuery<GetTradersData, GetTradersVars>(GET_TRADERS, {
+    variables: { searchQuery },
+    fetchPolicy: "cache-and-network",
+  });
 
   const tradersData = useMemo(() => {
     return data.traders.map((trader) => {
-      const amountOfBets = trader.bets.bets_placed.length;
       const totals = trader.bets.bets_placed.reduce(
-        (acc, cur) => {
-          if (!cur.selection_model.outcome) {
-            return {
-              ...acc,
-              pendingAmount: acc.pendingAmount + cur.price * cur.stake_size,
-              pendingBets: acc.pendingBets + 1,
-            };
+        (acc, bet) => {
+          const { price, stake_size, selection_model } = bet;
+          const outcome = selection_model.outcome?.outcome;
+
+          if (!outcome) {
+            acc.pendingAmount += price * stake_size;
+            acc.pendingBets++;
+          } else if (outcome === "won") {
+            acc.totalEarned += price * stake_size;
+            acc.successfulBets++;
+          } else {
+            acc.totalLost += stake_size;
+            acc.amountOfBetsLost++;
           }
-          if (cur.selection_model.outcome.outcome === "won") {
-            return {
-              ...acc,
-              totalEarned: acc.totalEarned + cur.price * cur.stake_size,
-              successfulBets: acc.successfulBets + 1,
-            };
-          }
-          return {
-            ...acc,
-            totalLost: acc.totalEarned + cur.price * cur.stake_size,
-            amountOfBetsLost: acc.amountOfBetsLost + 1,
-          };
+
+          return acc;
         },
         {
           totalEarned: 0,
@@ -150,68 +139,64 @@ const TradersTable = () => {
       return {
         trader_name: trader.trader_name,
         trader_id: trader.trader_id,
-        amountOfBets,
+        amountOfBets: trader.bets.bets_placed.length,
         ...totals,
         netBalance: totals.totalEarned - totals.totalLost,
       };
     });
   }, [data.traders]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <Box width="85vw">
+        <p>Loading...</p>
+      </Box>
+    );
+  }
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <Box>
-      <Typography variant="h3" sx={{ marginBottom: "24px" }}>
-        Traders
-      </Typography>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody sx={{ width: "100%", position: "relative" }}>
-              {tradersData.map((row) => {
-                return (
-                  <Fragment key={row.trader_id}>
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {columns.map((column) => {
-                        const v = getTableCellText(
-                          column,
-                          row as unknown as Record<string, unknown>
-                        );
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <TableContainer>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody sx={{ width: "100%", position: "relative" }}>
+            {tradersData.map((row) => {
+              return (
+                <Fragment key={row.trader_id}>
+                  <TableRow hover role="checkbox" tabIndex={-1}>
+                    {columns.map((column) => {
+                      const v = getTableCellText(
+                        column,
+                        row as unknown as Record<string, unknown>
+                      );
 
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format ? column.format(v) : v}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  </Fragment>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format ? column.format(v) : v}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                </Fragment>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 

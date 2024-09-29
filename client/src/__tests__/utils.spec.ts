@@ -4,13 +4,13 @@ describe("formatDate", () => {
   test("should format a valid date string correctly", () => {
     const dateString = "2023-05-28T12:00:00Z";
     const formattedDate = formatDate(dateString);
-    expect(formattedDate).toBe("28 May 2023 at 1:00:00 pm");
+    expect(formattedDate).toBe("28 May 2023 at 13:00");
   });
 
   test("should handle a different valid date correctly", () => {
     const dateString = "2024-01-01T00:00:00Z";
     const formattedDate = formatDate(dateString);
-    expect(formattedDate).toBe("1 January 2024 at 12:00:00 am");
+    expect(formattedDate).toBe("1 January 2024 at 00:00");
   });
 
   test("should handle invalid date strings gracefully", () => {

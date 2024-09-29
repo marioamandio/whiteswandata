@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -9,44 +9,40 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  styled,
 } from "@mui/material";
+import { SUBMIT_SELECTION_OUTCOME } from "../queries/modelsSelections";
 
-const style = {
+const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+  backgroundColor: theme.palette.background.paper,
+  border: `2px solid ${theme.palette.divider}`,
+  boxShadow: theme.shadows[24],
+  padding: theme.spacing(4),
   display: "flex",
   flexDirection: "column",
-  gap: "2rem",
-};
-
-const SUBMIT_SELECTION_OUTCOME = gql`
-  mutation ($selection_id: ID!, $outcome: String) {
-    resolveBet(selection_id: $selection_id, outcome: $outcome) {
-      outcome
-    }
-  }
-`;
+  gap: theme.spacing(2),
+}));
 
 const ResolveSelectionModal: FC<{
-  selection_id: string;
+  payload: Record<string, string>;
   open: boolean;
   setOpen: (v: boolean) => void;
-  callback: () => void;
-}> = ({ selection_id, open, setOpen, callback }) => {
+  callback?: () => void;
+}> = ({ payload, open, setOpen, callback }) => {
   const [modelResolution, setModelResolution] = useState("");
   const [submitSelectionOutcome, { loading, error }] = useMutation(
     SUBMIT_SELECTION_OUTCOME,
     {
       awaitRefetchQueries: true,
       onCompleted: () => {
-        callback();
+        if (callback) {
+          callback();
+        }
         setOpen(false);
       },
     }
@@ -54,7 +50,10 @@ const ResolveSelectionModal: FC<{
 
   const handleSubmitClick = () => {
     submitSelectionOutcome({
-      variables: { selection_id, outcome: modelResolution },
+      variables: {
+        ...payload,
+        outcome: modelResolution,
+      },
     });
   };
 
@@ -69,20 +68,20 @@ const ResolveSelectionModal: FC<{
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
+      <StyledBox>
+        <Typography variant="h6" component="h2">
           Resolve Model Selection
         </Typography>
         <FormControl fullWidth variant="standard">
-          <InputLabel id="demo-simple-select-label">Outcome</InputLabel>
+          <InputLabel>Outcome</InputLabel>
           <Select
             labelId="demo-simple-select-label"
-            id="demo-simple-select"
             value={modelResolution}
             label="Outcome"
             onChange={(event) =>
               setModelResolution(event.target.value as string)
             }
+            data-testid="select-model-resolution"
           >
             <MenuItem value={"won"}>Won</MenuItem>
             <MenuItem value={"lost"}>Lost</MenuItem>
@@ -95,7 +94,7 @@ const ResolveSelectionModal: FC<{
         >
           Submit
         </Button>
-      </Box>
+      </StyledBox>
     </Modal>
   );
 };

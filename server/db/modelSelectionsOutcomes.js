@@ -16,10 +16,14 @@ export async function getModelSelectionsOutcome(selection_id) {
   return outcome;
 }
 
-export async function insertModelSelectionOutcome(selection_id, resolution) {
+export async function insertModelSelectionOutcome({
+  fixture_id,
+  selection_id,
+  outcome,
+}) {
   try {
     await getModelSelectionsOutcomesTable()
-      .insert({ selection_id, outcome: resolution })
+      .insert({ selection_id, outcome, fixture_id })
       .onConflict("selection_id")
       .merge();
 
@@ -27,7 +31,15 @@ export async function insertModelSelectionOutcome(selection_id, resolution) {
       .where({ selection_id })
       .first();
 
-    return updatedRow;
+    const totalCount = await getModelSelectionsOutcomesTable()
+      .where({ fixture_id })
+      .count({ total: "*" })
+      .first();
+
+    return {
+      ...updatedRow,
+      amountOfResolvedPerFixture: totalCount.total,
+    };
   } catch (error) {
     console.error("Error during upsert operation:", error);
     return { success: false, message: error.message };

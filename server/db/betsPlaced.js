@@ -4,7 +4,10 @@ const getBetsPlacedTable = () => connection.table("bets_placed");
 
 export const getBetsPlaced = async (fixture_id, selection_id) => {
   if (selection_id) {
-    return await getBetsPlacedTable().where({ selection_id }).select();
+    return await await getBetsPlacedTable()
+      .where({ selection_id })
+      .orderBy("bet_time", "desc")
+      .select();
   }
 
   if (fixture_id) {

@@ -37,7 +37,9 @@ describe("Resolvers", () => {
       const mockTraders = [{ id: 1, name: "John Doe" }];
       getTraders.mockResolvedValue(mockTraders);
 
-      const result = await resolvers.Query.traders();
+      const result = await resolvers.Query.traders(null, {
+        searchQuery: "John",
+      });
 
       expect(getTraders).toHaveBeenCalled();
       expect(result).toEqual(mockTraders);

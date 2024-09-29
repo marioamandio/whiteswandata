@@ -37,7 +37,11 @@ const columns: readonly Column[] = [
     format: (value) => formatDate(`${value}`),
   },
   { id: "stake_size", label: "Stake Size" },
-  { id: "price", label: "Price" },
+  {
+    id: "price",
+    label: "Price",
+    format: (value) => formatNumberWithCommas(Number(value)),
+  },
   {
     id: "bet_size",
     label: "Bet Size",

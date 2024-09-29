@@ -54,4 +54,18 @@ cd server
 npm run test
 ```
 
-### 3. This will execute the server tests
+<br />
+
+# Default the databse values:
+
+### 1. Navigate into the `server` folder:
+
+```bash
+cd server
+```
+
+### 2. Run the comand to default the database values:
+
+```bash
+npm run default:db
+```

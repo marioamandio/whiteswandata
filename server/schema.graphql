@@ -2,15 +2,27 @@ type Query {
   bets(fixture_id: ID, selection_id: ID): [Bet]
   modelSelections(fixture_id: ID): [ModelSelection]
   modelSelection(id: ID!): ModelSelection
-  traders: [Trader]
+  traders(searchQuery: String): [Trader]
   trader(id: ID!): Trader
   market(id: ID!): Market
-  individualFixtures: [IndividualFixture]
-  participantFixtures: [ParticipantFixture]
+  fixtures: [Fixture]
+  individualFixtures(
+    searchQuery: String
+    resolved: Boolean
+  ): [IndividualFixture]
+  participantFixtures(
+    searchQuery: String
+    resolved: Boolean
+  ): [ParticipantFixture]
 }
 
 type Mutation {
-  resolveBet(selection_id: ID!, outcome: String): SelectionsOutcome
+  resolveBet(
+    selection_id: ID!
+    fixture_id: ID!
+    fixture_type: String!
+    outcome: String!
+  ): SelectionsOutcome
 }
 
 type Bet {
@@ -45,6 +57,7 @@ type IndividualFixture {
   sport_id: ID!
   models: [ModelSelection]
   fixture_type: String
+  resolved: Boolean
 }
 
 type Trader {
@@ -66,18 +79,25 @@ type ParticipantFixture {
   event_start_time: String
   models: [ModelSelection]
   fixture_type: String
+  resolved: Boolean
 }
 
 type Fixture {
   fixture_id: ID!
+  event_start_time: String!
+  resolved: Boolean
+  sport_id: ID!
+  fixture_type: String!
+  fixture_details: FixtureDetails
+  model_selections: [ModelSelection]
+}
+
+type FixtureDetails {
+  event_name: String
+  event_number: String
+  runner: String
   participant_1: String
   participant_2: String
-  sport_id: ID!
-  event_start_time: String!
-  event_name: String
-  event_number: Int
-  runner: String
-  fixture_type: String!
 }
 
 type ModelSelection {
@@ -93,5 +113,6 @@ type ModelSelection {
 
 type SelectionsOutcome {
   selection_id: ID!
+  fixture_id: ID!
   outcome: String
 }

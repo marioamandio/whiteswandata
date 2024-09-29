@@ -19,12 +19,8 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
-          <Route index path="/" element={<FixturesPage />}></Route>
-          <Route
-            index
-            path="/:fixtureId"
-            element={<ModelSelectionsPage />}
-          ></Route>
+          <Route index path="/" element={<FixturesPage />} />
+          <Route index path="/:fixtureId" element={<ModelSelectionsPage />} />
         </Routes>
       </ThemeProvider>
     </>

@@ -12,7 +12,10 @@ import {
 import { FC, Fragment, useMemo, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import BetsPlacedSection from "./BetsPlaced";
-import { getTableCellText } from "../utils/parseCellsText";
+import {
+  formatNumberWithCommas,
+  getTableCellText,
+} from "../utils/parseCellsText";
 import { Column } from "../types";
 import { GET_MODELS_SELECTIONS } from "../queries/modelsSelections";
 import ResolveSelectionModelButton from "./ResolveSelectionModelButton";
@@ -42,21 +45,21 @@ interface GetModelSelectionsVars {
 
 const columns: readonly Column[] = [
   { id: "selection_id", label: "Selection ID", minWidth: 150 },
-  { id: "selection", label: "Selection", minWidth: 150 },
   { id: "market.market_name", label: "Market", minWidth: 150 },
+  { id: "selection", label: "Selection", minWidth: 150 },
   { id: "value", label: "Value", minWidth: 100 },
   {
     id: "bottom_price",
     label: "Bottom Price",
     minWidth: 150,
     align: "right",
-    format: (value) => Number(value).toFixed(2),
+    format: (value) => formatNumberWithCommas(Number(value)),
   },
   {
     id: "outcome.outcome",
     label: "Outcome",
     minWidth: 200,
-    format: (value, selection_id, callback) => {
+    format: (value, payload, callback) => {
       if (value) {
         return (
           <Box
@@ -72,11 +75,10 @@ const columns: readonly Column[] = [
         );
       }
 
+      if (!payload) return null;
+
       return (
-        <ResolveSelectionModelButton
-          selection_id={selection_id}
-          callback={callback}
-        />
+        <ResolveSelectionModelButton payload={payload} callback={callback} />
       );
     },
   },
@@ -167,7 +169,15 @@ const ModelSelectionsTable: FC<{ fixtureId: string; fixtureType: string }> = ({
                       return (
                         <TableCell key={column.id} align={column.align}>
                           {column.format
-                            ? column.format(v, row.selection_id, refetch)
+                            ? column.format(
+                                v,
+                                {
+                                  selection_id: row.selection_id,
+                                  fixture_id: fixtureId,
+                                  fixture_type: fixtureType,
+                                },
+                                refetch
+                              )
                             : v}
                         </TableCell>
                       );

@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 import { formatDate } from "../utils/formatDate";
+import { green, yellow } from "@mui/material/colors";
 
 const TableHeaderIndividualFixtures: FC<{
   fixture: {
@@ -11,6 +12,7 @@ const TableHeaderIndividualFixtures: FC<{
     event_number: string;
     runner: string;
     sport_id: string;
+    resolved: boolean;
   };
 }> = ({ fixture }) => {
   return (
@@ -35,6 +37,26 @@ const TableHeaderIndividualFixtures: FC<{
         </Typography>
         <Typography variant="body2">Runner: {fixture.runner}</Typography>
         <Typography variant="body2">Sport ID: {fixture.sport_id}</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              backgroundColor: fixture.resolved ? green[600] : yellow[600],
+              marginRight: 1,
+            }}
+          />
+          <Typography variant="body2">
+            {fixture.resolved ? "Resolved" : "Pending Resolution"}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
